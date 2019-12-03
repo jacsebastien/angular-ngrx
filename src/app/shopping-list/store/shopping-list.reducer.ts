@@ -23,6 +23,16 @@ export function shoppingListReducer(
         ...state,
         ingredients: [...state.ingredients, ...action.payload]
       };
+    case Actions.UPDATE_INGREDIENT:
+      return {
+        ...state,
+        ingredients: state.ingredients.map((ig, index) => index === action.payload.index ? { ...ig, ...action.payload.ingredient} : ig)
+      };
+    case Actions.DELETE_INGREDIENT:
+      return {
+        ...state,
+        ingredients: state.ingredients.filter((ig, index) => index !== action.payload)
+      };
     default:
       return state;
   }
