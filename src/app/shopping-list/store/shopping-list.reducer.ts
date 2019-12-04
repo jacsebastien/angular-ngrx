@@ -38,12 +38,28 @@ export function shoppingListReducer(
     case Actions.UPDATE_INGREDIENT:
       return {
         ...state,
-        ingredients: state.ingredients.map((ig, index) => index === action.payload.index ? { ...ig, ...action.payload.ingredient} : ig)
+        ingredients: state.ingredients.map((ig, index) => index === state.editedIngredientIndex ? { ...ig, ...action.payload } : ig),
+        editedIngredient: null,
+        editedIngredientIndex: -1
       };
     case Actions.DELETE_INGREDIENT:
       return {
         ...state,
-        ingredients: state.ingredients.filter((ig, index) => index !== action.payload)
+        ingredients: state.ingredients.filter((ig, index) => index !== state.editedIngredientIndex),
+        editedIngredient: null,
+        editedIngredientIndex: -1
+      };
+    case Actions.START_EDIT:
+      return {
+        ...state,
+        editedIngredientIndex: action.payload,
+        editedIngredient: { ...state.ingredients[action.payload] }
+      };
+    case Actions.STOP_EDIT:
+      return {
+        ...state,
+        editedIngredient: null,
+        editedIngredientIndex: -1
       };
     default:
       return state;
